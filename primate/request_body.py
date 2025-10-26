@@ -14,8 +14,8 @@ class RequestBody:
   def text(self):
     return self.body.text()
 
-  def fields(self):
-    return convert_from_js(self.body.fields(), self.helpers)
+  def form(self):
+    return convert_from_js(self.body.form(), self.helpers)
 
   def files(self):
     files_array = self.body.files()

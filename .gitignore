@@ -1,6 +1,11 @@
+venv/
 __pycache__/
 *.pyc
 *.pyo
-dist/
+*.pyd
+.Python
 build/
+dist/
 *.egg-info/
+.pytest_cache/
+.ruff_cache/
