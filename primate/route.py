@@ -3,6 +3,7 @@ from __future__ import annotations
 import inspect
 from collections.abc import Callable
 
+from .i18n import I18N
 from .request import Request
 from .response import Response
 from .session import Session, SessionInstance
@@ -97,6 +98,10 @@ class Route:
     Session.set_current(session_instance)
 
   @classmethod
+  def set_i18n(cls, i18n_obj) -> None:
+    I18N.set_current(i18n_obj)
+
+  @classmethod
   def call_route(
     cls,
     method: str,
@@ -117,8 +122,10 @@ class Route:
     js_request,
     helpers_obj,
     session_obj,
+    i18n_obj,
   ):
     cls.set_session(session_obj, helpers_obj)
+    cls.set_i18n(i18n_obj)
     req = cls.Request(js_request, helpers_obj)
     result = cls.call_route(method, req, scope)
     if inspect.isawaitable(result):
