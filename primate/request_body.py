@@ -1,6 +1,11 @@
 from .readable import Readable
-from .type_converter import convert_from_js
 from .uploaded_file import UploadedFile
+
+
+class Multipart:
+  def __init__(self, form, files):
+    self.form = form
+    self.files = files
 
 
 class RequestBody:
@@ -9,31 +14,36 @@ class RequestBody:
     self.helpers = helpers
 
   def json(self):
-    return convert_from_js(self.body.json(), self.helpers)
+    import json
+
+    return json.loads(str(self.body.jsonSync()))
 
   def text(self):
-    return self.body.text()
+    return str(self.body.textSync())
 
   def form(self):
-    return convert_from_js(self.body.form(), self.helpers)
+    import json
 
-  def files(self):
-    files_array = self.body.files()
+    return json.loads(str(self.body.formSync()))
+
+  def multipart(self):
+    import json
+
+    form = json.loads(str(self.body.formSync()))
+    files_js = self.body.filesSync()
     files = []
-
-    for i in range(files_array.length):
-      f = files_array[i]
-      uploaded_file = UploadedFile(
-        field=str(f.field),
-        name=str(f.name),
-        type=str(f.type),
-        size=int(f.size),
-        bytes_data=f.bytes,
+    for i in range(files_js.length):
+      f = files_js[i]
+      files.append(
+        UploadedFile(
+          field=str(f.field),
+          name=str(f.name),
+          type=str(f.type),
+          size=int(f.size),
+          bytes_data=f.bytes,
+        )
       )
-      files.append(uploaded_file)
+    return Multipart(form, files)
 
-    return files
-
-  def binary(self):
-    binary = self.body.binary()
-    return Readable(binary.buffer, str(binary.mime))
+  def blob(self):
+    return Readable(self.body.blobSync(), str(self.body.blobTypeSync()))
