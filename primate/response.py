@@ -38,11 +38,10 @@ class Response:
     Returns:
         Response object for the Primate framework
     """
-    options = {}
+    result: dict[str, Any] = {"__PRMT__": "redirect", "location": location}
     if status is not None:
-      options["status"] = status
-
-    return {"__PRMT__": "redirect", "location": location, "options": options}
+      result["status"] = status
+    return result
 
   @staticmethod
   def error(options: dict[str, Any] | None = None) -> dict[str, Any]:

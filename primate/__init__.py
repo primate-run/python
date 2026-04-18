@@ -8,7 +8,7 @@ from .session import Session
 from .uploaded_file import UploadedFile
 from .url import URL
 
-__version__ = "0.4.2"
+__version__ = "0.6.1"
 __all__ = [
   "I18N",
   "Route",
