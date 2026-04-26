@@ -1,7 +1,7 @@
 class Readable:
-  def __init__(self, typed_array, content_type=None):
+  def __init__(self, typed_array, type=None):
     self.typed_array = typed_array
-    self.content_type = content_type
+    self.type = type
     self.pos = 0
     self.size = (
       len(typed_array)
